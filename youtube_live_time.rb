@@ -1,7 +1,7 @@
 require 'time'
 require 'csv'
 
-def readCsv
+def read_csv
   Dir.glob('./data/*.csv').map { |path|
     csv = CSV.read(path)
     start_str = csv[0][3]
@@ -10,11 +10,11 @@ def readCsv
   }
 end
 
-def str2Date(str)
+def str2date(str)
   Time.parse(str)
 end
 
-def getMonthName(time)
+def get_month_name(time)
   case time.month
   when 1
     'Jan'
@@ -43,7 +43,7 @@ def getMonthName(time)
   end
 end
 
-def sec2Time(_sec)
+def sec2time(_sec)
   sec = _sec
   h = 60 * 60
   m = 60
@@ -54,13 +54,13 @@ def sec2Time(_sec)
   puts format('%02d:%02d:%02d', hour, minute, sec)
 end
 
-def csv2HashArray(csv_data)
+def csv2hash_array(csv_data)
   data = {}
   csv_data.each { |csv|
-    start_time = str2Date(csv[:start])
-    end_time = str2Date(csv[:end])
+    start_time = str2date(csv[:start])
+    end_time = str2date(csv[:end])
 
-    month_name = getMonthName(start_time)
+    month_name = get_month_name(start_time)
     if data[month_name.to_s].nil?
       data[month_name.to_s] = []
     end
@@ -70,7 +70,7 @@ def csv2HashArray(csv_data)
   data
 end
 
-def putsMonthlyLiveHour(monthly_data)
+def puts_monthly_live_hour(monthly_data)
   monthly_data.each do |key, value|
     print key.to_s + ': '
 
@@ -79,10 +79,10 @@ def putsMonthlyLiveHour(monthly_data)
       month_sec += obj[:end] - obj[:start]
     end
 
-    sec2Time(month_sec)
+    sec2time(month_sec)
   end
 end
 
-csv_data = readCsv
-data = csv2HashArray(csv_data)
-putsMonthlyLiveHour(data)
+csv_data = read_csv
+data = csv2hash_array(csv_data)
+puts_monthly_live_hour(data)
